@@ -1,0 +1,19 @@
+{
+  "name": "coherence-replay",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "start": "node server/serve.mjs",
+    "test": "vitest",
+    "smoke": "node scripts/smoke.mjs"
+  },
+  "devDependencies": {
+    "typescript": "~5.5.4",
+    "vite": "^5.4.8",
+    "vitest": "^2.1.2"
+  }
+}

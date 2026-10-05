@@ -1,0 +1,78 @@
+{
+  "legal-retry": {
+    "name": "合法：总线丢包重传后同世代确认闭合",
+    "cores": 3,
+    "lines": 2,
+    "events": [
+      { "id": "e1", "type": "read_miss", "core": 0, "line": 0 },
+      { "id": "e2", "type": "message", "mid": "@AUTO:e1:data:0" },
+      { "id": "e3", "type": "read_miss", "core": 1, "line": 0 },
+      { "id": "e4", "type": "message", "mid": "@AUTO:e3:data:1" },
+      { "id": "e5", "type": "write_upgrade", "core": 0, "line": 0 },
+      { "id": "e6", "type": "timeout_retry", "mid": "@AUTO:e5:inv:1" },
+      { "id": "e7", "type": "message", "mid": "@AUTO:e5:inv:1" },
+      { "id": "e8", "type": "message", "mid": "@AUTO:e7:invack:1" }
+    ]
+  },
+  "late-ack": {
+    "name": "违约：旧世代迟到确认不得释放新一轮独占权限",
+    "cores": 3,
+    "lines": 1,
+    "events": [
+      { "id": "e1", "type": "read_miss", "core": 0, "line": 0 },
+      { "id": "e2", "type": "message", "mid": "@AUTO:e1:data:0" },
+      { "id": "e3", "type": "read_miss", "core": 1, "line": 0 },
+      { "id": "e4", "type": "message", "mid": "@AUTO:e3:data:1" },
+      { "id": "e5", "type": "write_upgrade", "core": 0, "line": 0 },
+      { "id": "e6", "type": "message", "mid": "@AUTO:e5:inv:1" },
+      { "id": "e7", "type": "message", "mid": "@AUTO:e6:invack:1" },
+      { "id": "e8", "type": "read_miss", "core": 1, "line": 0 },
+      { "id": "e9", "type": "message", "mid": "@AUTO:e8:fetch:0" },
+      { "id": "e10", "type": "message", "mid": "@AUTO:e9:data:1" },
+      { "id": "e11", "type": "write_upgrade", "core": 0, "line": 0 },
+      { "id": "e12", "type": "ack", "core": 1, "line": 0, "gen": 1 }
+    ]
+  },
+  "early-ack": {
+    "name": "违约：同世代确认先于失效请求送达",
+    "cores": 2,
+    "lines": 1,
+    "events": [
+      { "id": "e1", "type": "read_miss", "core": 0, "line": 0 },
+      { "id": "e2", "type": "message", "mid": "@AUTO:e1:data:0" },
+      { "id": "e3", "type": "read_miss", "core": 1, "line": 0 },
+      { "id": "e4", "type": "message", "mid": "@AUTO:e3:data:1" },
+      { "id": "e5", "type": "write_upgrade", "core": 0, "line": 0 },
+      { "id": "e6", "type": "ack", "core": 1, "line": 0, "gen": 1 }
+    ]
+  },
+  "missing-owner-data": {
+    "name": "违约：拥有者下放数据缺失，内存数据不得顶替",
+    "cores": 2,
+    "lines": 1,
+    "events": [
+      { "id": "e1", "type": "read_miss", "core": 0, "line": 0 },
+      { "id": "e2", "type": "message", "mid": "@AUTO:e1:data:0" },
+      { "id": "e3", "type": "write_upgrade", "core": 0, "line": 0 },
+      { "id": "e4", "type": "read_miss", "core": 1, "line": 0 },
+      { "id": "e5", "type": "message", "mid": "@AUTO:e4:fetch:0" },
+      { "id": "e6", "type": "message", "mid": "@AUTO:e5:data:1", "from": null }
+    ]
+  },
+  "idempotent-replay": {
+    "name": "合法：重复投递与重复确认只回放既有动作",
+    "cores": 2,
+    "lines": 1,
+    "events": [
+      { "id": "e1", "type": "read_miss", "core": 0, "line": 0 },
+      { "id": "e2", "type": "message", "mid": "@AUTO:e1:data:0" },
+      { "id": "e3", "type": "read_miss", "core": 1, "line": 0 },
+      { "id": "e4", "type": "message", "mid": "@AUTO:e3:data:1" },
+      { "id": "e5", "type": "write_upgrade", "core": 0, "line": 0 },
+      { "id": "e6", "type": "message", "mid": "@AUTO:e5:inv:1" },
+      { "id": "e7", "type": "message", "mid": "@AUTO:e5:inv:1" },
+      { "id": "e8", "type": "message", "mid": "@AUTO:e6:invack:1" },
+      { "id": "e9", "type": "message", "mid": "@AUTO:e6:invack:1" }
+    ]
+  }
+}
